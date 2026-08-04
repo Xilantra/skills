@@ -43,6 +43,7 @@ cross-platform-app-port/
 │   └── port-brief.md
 ├── assets/
 │   ├── ARCHITECTURE_DECISION.template.md
+│   ├── DECISIONS.template.md
 │   ├── FEATURE_INVENTORY.template.csv
 │   ├── MIGRATION_PLAN.template.md
 │   ├── MIGRATION_STATE.template.json

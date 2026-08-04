@@ -1,0 +1,41 @@
+{
+  "skill_name": "cross-platform-app-port",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Port our existing iOS profile and settings flow to the Android app. The SwiftUI screen has persistence, validation, network calls, and analytics inside one large view. Android already uses Compose, ViewModels, repositories, and a design-token module. Keep behavior the same, but I also want normal title case instead of the iOS app's hardcoded lowercase labels and proper light/dark tokens for every accent color.",
+      "expected_output": "A source-and-target assessment, a port brief that records title-case and theme improvements, a vertical-slice plan, and a target-native design that follows the existing Android conventions instead of translating the large SwiftUI view directly.",
+      "assertions": [
+        "The output distinguishes required parity from the two requested Android improvements.",
+        "The output does not propose a line-by-line Swift-to-Kotlin translation.",
+        "The output uses or explicitly evaluates the existing Compose, ViewModel, repository, and token conventions.",
+        "The title-case requirement has observable acceptance criteria rather than vague wording.",
+        "The theme requirement covers semantic light and dark tokens and verification."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Move this Android app to iOS. I want the same layout and task flow, but I am fine with iOS-native navigation, sheets, controls, and back behavior. For phase one, skip widgets and quick controls. Keep those visible for phase two. The app should stay small and fast.",
+      "expected_output": "A port brief and phased migration plan that preserves layout intent and task flow, documents accepted iOS-native adaptations, marks widgets and quick controls as deferred rather than complete, and defines measurable size and performance checks.",
+      "assertions": [
+        "The output records iOS-native navigation and controls as accepted adaptations, not defects.",
+        "Widgets and quick controls are marked deferred and remain visible in the roadmap.",
+        "The output does not claim full product parity for phase one.",
+        "The small-and-fast goal is converted into measurable baseline and target checks.",
+        "The plan is organized into complete user journeys rather than visual screens only."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Rebuild our legacy desktop calculation tool as a native app. The old calculation engine works but is slow, duplicated, and barely tested. Optimize it in the new app if possible, but outputs must stay compatible. Tell us about improvements we should bring back to the original tool. Do not rewrite unrelated modules.",
+      "expected_output": "A bounded migration approach that first captures calculation behavior with fixtures or characterization tests, preserves output compatibility, benchmarks any optimization, avoids unrelated rewrites, and produces evidence-backed upstream recommendations.",
+      "assertions": [
+        "The output requires characterization tests or fixtures before changing calculation behavior.",
+        "The output separates compatibility verification from optimization measurement.",
+        "The output explicitly avoids unrelated architecture cleanup.",
+        "The output creates an upstream recommendation with evidence, benefit, and risk.",
+        "The output does not assume that faster code is equivalent without comparing outputs."
+      ]
+    }
+  ]
+}

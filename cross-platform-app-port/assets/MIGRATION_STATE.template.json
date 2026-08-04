@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "skill_version": "0.1.0",
+  "project": {
+    "source_platform": "",
+    "target_platform": "",
+    "phase": "1",
+    "port_brief": "PORT_BRIEF.md"
+  },
+  "active_slice_id": null,
+  "updated_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "slices": [
+    {
+      "id": "SLICE-001",
+      "name": "",
+      "priority": 1,
+      "in_scope": true,
+      "status": "planned",
+      "acceptance_criteria": [],
+      "requested_improvements": [],
+      "accepted_adaptations": [],
+      "deferred_items": [],
+      "blocker": null,
+      "evidence": {
+        "tests": [],
+        "screenshots": [],
+        "commits": [],
+        "reports": []
+      },
+      "last_iteration": null,
+      "next_action": ""
+    }
+  ],
+  "summary": {
+    "in_scope_total": 1,
+    "completed": 0,
+    "deferred": 0,
+    "blocked": 0,
+    "unsupported": 0
+  }
+}

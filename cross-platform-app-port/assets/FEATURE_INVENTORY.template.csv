@@ -1,0 +1,2 @@
+id,area,feature_or_flow,source_entry_point,states,domain_rules,data_dependencies,platform_dependencies,accessibility,priority,phase,status,evidence,notes
+F-001,,,,,,,,,must,1,planned,,

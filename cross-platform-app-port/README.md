@@ -6,6 +6,18 @@ An Agent Skill for rebuilding an existing product on another platform or framewo
 
 Preserve verified product behavior, data meaning, and visual intent. Do not reproduce source technical debt by default. Use the target platform's supported conventions where they improve maintainability, accessibility, performance, or platform fit.
 
+## Install this skill
+
+```bash
+npx skills add https://github.com/Xilantra/skills --skill cross-platform-app-port
+```
+
+## Install all Xilantra skills
+
+```bash
+npx skills add xilantra/skills
+```
+
 ## Distinguishing features
 
 - Starts with a user-authored port brief, including desired improvements

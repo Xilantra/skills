@@ -1,6 +1,6 @@
 # xilantra/skills
 
-Reusable Agent Skills by Xilantra.
+Reusable Agent Skills by Afiq Xilantra Azmi.
 
 ## Included skill
 
@@ -18,7 +18,13 @@ The skill supports workflows such as:
 - Views to Jetpack Compose
 - React Native or Flutter to native platforms
 
-## Install after publishing this repository
+## Install this skill
+
+```bash
+npx skills add https://github.com/Xilantra/skills --skill cross-platform-app-port
+```
+
+## Install all Xilantra skills
 
 ```bash
 npx skills add xilantra/skills

@@ -51,6 +51,45 @@ Do not claim optimization without a comparable measurement.
 
 Verify build, tests, static checks, dependency changes, warnings, error handling, secrets, privacy, and maintainability.
 
+## Acquiring Source Evidence
+
+Before requesting new screenshots or recordings, inspect the source repository, migration workspace, tests, documentation, design files, and existing artifacts.
+
+Use source evidence in this order:
+
+1. Live captures produced by the agent from the running source app.
+2. Existing repository or project artifacts whose version and state are known.
+3. Captures supplied manually by the user or another tester.
+4. Captures produced by a compatible remote build, test, or CI environment.
+5. Code, fixtures, tests, and written behavior specifications when visual evidence is unavailable.
+
+Do not treat promotional App Store, Play Store, website, or social media images as authoritative pixel-level references unless the user confirms that they represent the current interface. They may be cropped, composited, annotated, outdated, or captured using different content.
+
+When the source platform cannot run in the current environment and suitable evidence is unavailable, ask once for the smallest useful capture set. Specify:
+
+- Screens and flows required
+- Loading, empty, error, offline, permission, and populated states
+- Light or dark appearance
+- Device or window class
+- Locale, language, text size, and time zone
+- App version or source commit
+- Required interaction recordings
+- A request to remove or obscure private information
+
+Prefer full-resolution, uncropped PNG screenshots. Use screen recordings for navigation, gestures, transitions, scrolling, animation, and timing behavior.
+
+Record the provenance of every reference:
+
+- Source
+- Capture date
+- App version or commit
+- Device or viewport
+- Operating-system version
+- Appearance and locale
+- Known limitations
+
+If visual evidence remains unavailable, continue with supported behavioral, data, architectural, and target-platform work. Mark visual verification as pending. Do not claim visual parity.
+
 ## Visual comparison
 
 Use side-by-side inspection first. Use overlays or pixel differences for diagnostics, not as the only acceptance gate.

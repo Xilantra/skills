@@ -1,11 +1,20 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "skill_version": "0.1.0",
   "project": {
     "source_platform": "",
     "target_platform": "",
     "phase": "1",
     "port_brief": "PORT_BRIEF.md"
+  },
+  "run_control": {
+    "mode": "interactive",
+    "max_iterations_per_slice": null,
+    "max_elapsed_minutes": null,
+    "budget_note": null,
+    "iterations_used": 0,
+    "started_at": null,
+    "terminal_reason": null
   },
   "active_slice_id": null,
   "updated_at": "YYYY-MM-DDTHH:MM:SSZ",
@@ -22,6 +31,9 @@
       "deferred_items": [],
       "blocker": null,
       "evidence": {
+        "source_commit": null,
+        "target_commit": null,
+        "verified_at": null,
         "tests": [],
         "screenshots": [],
         "commits": [],

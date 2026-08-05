@@ -130,4 +130,4 @@ skills-ref validate .
 
 ## Release status
 
-`0.1.0` is ready for repository review and real-agent evaluation. The included evals are test definitions, not evidence that the skill has passed them.
+`0.2.0` adds scaled workflow ceremony, bounded and multi-agent loop control, independent verification guidance, human approval gates, and commit-bound evidence. The included evals remain test definitions until they are run in clean sessions with and without the skill.

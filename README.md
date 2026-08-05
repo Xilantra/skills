@@ -18,6 +18,27 @@ The skill supports workflows such as:
 - Views to Jetpack Compose
 - React Native or Flutter to native platforms
 
+## Bird's-eye view
+
+```mermaid
+flowchart LR
+    A[Existing product] --> B[Define port scope]
+    B --> C[Characterize verified behavior]
+    C --> D[Separate product truth from source debt]
+    D --> E[Map target-platform equivalents]
+    E --> F[Build one target-native vertical slice]
+    F --> G[Build, test, capture, compare]
+    G --> H{All gates pass?}
+    H -- No --> I[Classify the gap]
+    I --> F
+    H -- Yes --> J[Record evidence and migration state]
+    J --> K{More in-scope slices?}
+    K -- Yes --> F
+    K -- No --> L[Human approval before merge or release]
+```
+
+The loop may run interactively or within explicit limits for long-running work. It must stop for blockers, exhausted budgets, iteration limits, or actions that require human approval.
+
 ## Install this skill
 
 ```bash
@@ -38,6 +59,13 @@ Run the bundled structural validator:
 
 ```bash
 python cross-platform-app-port/scripts/validate_skill.py cross-platform-app-port
+```
+
+Validate the migration-state template:
+
+```bash
+python cross-platform-app-port/scripts/validate_migration_state.py \
+  cross-platform-app-port/assets/MIGRATION_STATE.template.json
 ```
 
 Then run the official Agent Skills reference validator when available:

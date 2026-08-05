@@ -1,0 +1,105 @@
+name: Release Cross-Platform App Port
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - cross-platform-app-port/SKILL.md
+      - cross-platform-app-port/RELEASE_NOTES.md
+      - .github/workflows/release-cross-platform-app-port.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-cross-platform-app-port
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Read skill version
+        id: version
+        shell: bash
+        run: |
+          VERSION="$(python - <<'PY'
+          import re
+          from pathlib import Path
+
+          text = Path("cross-platform-app-port/SKILL.md").read_text(encoding="utf-8")
+          match = re.search(r'^\s+version:\s*["\x27]?([0-9]+\.[0-9]+\.[0-9]+)["\x27]?\s*$', text, re.MULTILINE)
+          if not match:
+              raise SystemExit("Could not find a semantic version in SKILL.md metadata")
+          print(match.group(1))
+          PY
+          )"
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=cross-platform-app-port-v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Validate package
+        run: |
+          python cross-platform-app-port/scripts/validate_skill.py cross-platform-app-port
+          python cross-platform-app-port/scripts/validate_migration_state.py \
+            cross-platform-app-port/assets/MIGRATION_STATE.template.json
+
+      - name: Validate release notes
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          version = os.environ["VERSION"]
+          notes = Path("cross-platform-app-port/RELEASE_NOTES.md").read_text(encoding="utf-8")
+          expected = f"Cross-Platform App Port v{version}"
+          if expected not in notes:
+              raise SystemExit(f"Release notes must include: {expected}")
+          PY
+
+      - name: Check existing release
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        shell: bash
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish release
+        if: steps.existing.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Cross-Platform App Port v$VERSION" \
+            --notes-file cross-platform-app-port/RELEASE_NOTES.md
+
+      - name: Report existing release
+        if: steps.existing.outputs.exists == 'true'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: echo "Release $TAG already exists; no action needed."

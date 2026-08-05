@@ -51,6 +51,22 @@ Do not claim optimization without a comparable measurement.
 
 Verify build, tests, static checks, dependency changes, warnings, error handling, secrets, privacy, and maintainability.
 
+## Independent verification
+
+Objective builds, tests, static checks, and reproducible evidence remain the primary gate.
+
+For high-risk slices, unattended work, or major phase completion, use an independent verifier when the environment supports one. Give it the port brief, acceptance criteria, diff, and evidence without relying on the implementer's reasoning. Ask it to attempt to disprove completion and parity claims.
+
+The verifier should report:
+
+- Missing or stale evidence
+- Unsupported completion claims
+- Regressions and unresolved differences
+- Acceptance criteria that were not demonstrated
+- Risks hidden by implementation assumptions
+
+An independent verifier cannot override a failing objective check. For small low-risk work, the same agent may perform a clean review pass when independent execution is unavailable.
+
 ## Acquiring Source Evidence
 
 Before requesting new screenshots or recordings, inspect the source repository, migration workspace, tests, documentation, design files, and existing artifacts.

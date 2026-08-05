@@ -76,7 +76,7 @@ skills-ref validate ./cross-platform-app-port
 
 ## Development status
 
-Version `0.1.0` is an initial, source-backed release candidate. It includes realistic eval cases, but those agent evals must still be run with and without the skill against clean sessions before calling the skill proven.
+Version `0.2.0` adds workflow scaling, bounded and multi-agent loop controls, commit-bound verification evidence, human approval gates, and bird's-eye workflow diagrams. The included eval cases still need real-agent runs with and without the skill before claiming a measured pass rate.
 
 ## License
 

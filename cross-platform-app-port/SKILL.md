@@ -117,6 +117,7 @@ If a platform cannot run in the current environment:
 4. Use a compatible remote environment when available.
 5. Mark unsupported verification as pending.
 6. Do not claim full parity until the required checks are completed.
+
 ## Step 2: Build the Port Brief
 
 Read `references/port-brief.md` before questioning the user.
@@ -237,6 +238,7 @@ When two or more agents or slices execute concurrently, isolate each in its own 
 ## Step 7: Execute the Port Loop
 
 For the active slice, repeat:
+
 1. **Characterize**: Verify source behavior with tests, fixtures, recordings, screenshots, or a behavior table.
 2. **Select**: Choose the highest-impact unresolved gap.
 3. **Implement**: Make the smallest coherent target-native change.

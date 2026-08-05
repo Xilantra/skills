@@ -42,6 +42,7 @@ Do not use it for a greenfield app with no source product, a cosmetic redesign w
 10. Keep the source repository read-only unless the user explicitly requests source-side changes.
 11. Do not copy secrets, signing credentials, environment files, private analytics keys, or platform-specific credentials into the target.
 12. Inspect unfamiliar repository scripts before executing them. Prefer documented build and test commands.
+13. Do not merge, deploy, publish, submit to an app store, rotate credentials, apply destructive data migrations, or perform other difficult-to-reverse actions without explicit human approval.
 
 ## Scale the Workflow to the Job
 
@@ -226,6 +227,14 @@ Prioritize:
 
 Avoid a large foundation rewrite unless several planned slices demonstrably require it.
 
+## Step 6A: Control Long-Running or Multi-Agent Execution
+
+For unattended, bounded, long-running, or multi-agent execution, read `references/loop-control.md` before starting the implementation loop.
+
+Do not run an unattended port loop unless objective verification, explicit limits, reversible workspaces, and human gates for irreversible actions are available.
+
+When two or more agents or slices execute concurrently, isolate each in its own branch and worktree or equivalent disposable workspace. Do not introduce worktree ceremony for one sequential agent.
+
 ## Step 7: Execute the Port Loop
 
 For the active slice, repeat:
@@ -238,10 +247,10 @@ For the active slice, repeat:
 6. **Capture**: Reproduce equivalent states. When the source cannot run locally, use verified artifacts, user-assisted captures, or compatible remote execution.
 7. **Compare**: Check behavior, data, visuals, accessibility, and performance.
 8. **Classify**: Mark each difference as defect, requested improvement, accepted native adaptation, deferral, blocker, or source issue.
-9. **Record**: Update only the artifacts required by the selected scope.
-10. **Repeat**: Fix the next highest-impact unresolved gap.
+9. **Record**: Update only the artifacts required by the selected scope. Bind completed evidence to the exact target commit or code state verified.
+10. **Repeat**: Fix the next highest-impact unresolved gap unless a configured loop limit, blocker, or human gate has been reached.
 
-Do not stop at a discrepancy report when the next safe correction can be implemented and verified.
+Do not stop at a discrepancy report when the next safe correction can be implemented and verified. Do not continue after a recorded terminal condition.
 
 ## Step 8: Verify Parity and Quality
 
@@ -297,6 +306,8 @@ Complete a phase when:
 - Required state and parity records are current
 - Upstream recommendations are delivered when applicable
 - The target build and tests have been verified
+
+For bounded execution, stop with one recorded terminal reason: `verified`, `blocked`, `human_review_required`, `budget_exhausted`, `iteration_limit_reached`, or `cancelled`.
 
 Pause and report a blocker only when progress requires unavailable credentials, inaccessible source behavior, a destructive decision, an unsupported external service, or a material product choice that cannot be inferred safely.
 

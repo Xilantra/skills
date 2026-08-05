@@ -17,6 +17,21 @@ ALLOWED_STATUSES = {
     "unsupported",
 }
 
+ALLOWED_RUN_MODES = {"interactive", "bounded_loop"}
+ALLOWED_TERMINAL_REASONS = {
+    None,
+    "verified",
+    "blocked",
+    "human_review_required",
+    "budget_exhausted",
+    "iteration_limit_reached",
+    "cancelled",
+}
+
+
+def is_non_negative_int(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
 
 def main() -> int:
     path = Path(sys.argv[1] if len(sys.argv) > 1 else "MIGRATION_STATE.json")
@@ -33,6 +48,37 @@ def main() -> int:
     for key in ("schema_version", "project", "slices", "summary"):
         if key not in data:
             errors.append(f"Missing top-level key: {key}")
+
+    schema_version = str(data.get("schema_version", ""))
+
+    run_control = data.get("run_control")
+    if run_control is not None:
+        if not isinstance(run_control, dict):
+            errors.append("`run_control` must be an object")
+        else:
+            mode = run_control.get("mode")
+            if mode not in ALLOWED_RUN_MODES:
+                errors.append(f"run_control.mode is invalid: {mode!r}")
+
+            for key in ("max_iterations_per_slice", "max_elapsed_minutes"):
+                value = run_control.get(key)
+                if value is not None and not is_non_negative_int(value):
+                    errors.append(f"run_control.{key} must be null or a non-negative integer")
+
+            iterations_used = run_control.get("iterations_used", 0)
+            if not is_non_negative_int(iterations_used):
+                errors.append("run_control.iterations_used must be a non-negative integer")
+
+            terminal_reason = run_control.get("terminal_reason")
+            if terminal_reason not in ALLOWED_TERMINAL_REASONS:
+                errors.append(f"run_control.terminal_reason is invalid: {terminal_reason!r}")
+
+            if mode == "bounded_loop":
+                has_iteration_limit = is_non_negative_int(run_control.get("max_iterations_per_slice"))
+                has_time_limit = is_non_negative_int(run_control.get("max_elapsed_minutes"))
+                has_budget_note = bool(str(run_control.get("budget_note") or "").strip())
+                if not (has_iteration_limit or has_time_limit or has_budget_note):
+                    errors.append("bounded_loop mode requires an iteration, elapsed-time, or explicit budget limit")
 
     slices = data.get("slices", [])
     if not isinstance(slices, list):
@@ -67,9 +113,21 @@ def main() -> int:
 
         if status == "completed":
             evidence = item.get("evidence") or {}
-            evidence_count = sum(len(evidence.get(key, [])) for key in ("tests", "screenshots", "commits", "reports"))
+            if not isinstance(evidence, dict):
+                errors.append(f"{label}.evidence must be an object")
+                evidence = {}
+            evidence_count = sum(
+                len(evidence.get(key, []))
+                for key in ("tests", "screenshots", "commits", "reports")
+                if isinstance(evidence.get(key, []), list)
+            )
             if evidence_count == 0:
                 errors.append(f"{label} is completed but has no evidence")
+            if schema_version != "1.0":
+                if not evidence.get("target_commit"):
+                    errors.append(f"{label} is completed but evidence.target_commit is missing")
+                if not evidence.get("verified_at"):
+                    errors.append(f"{label} is completed but evidence.verified_at is missing")
 
         if status == "blocked" and not item.get("blocker"):
             errors.append(f"{label} is blocked but has no blocker description")
